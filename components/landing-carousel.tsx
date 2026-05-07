@@ -257,12 +257,51 @@ function ProjectCard({
   item: LandingItem
   isVisible: boolean 
 }) {
+  const cardRef = useRef<HTMLDivElement>(null)
   const [showCode, setShowCode] = useState(true)
+  const [hasPassedCenter, setHasPassedCenter] = useState(false)
   const [typedLines, setTypedLines] = useState<string[]>([])
   const [currentLine, setCurrentLine] = useState(0)
   const [currentChar, setCurrentChar] = useState(0)
 
-  // Typing effect
+  // Detect when card passes center of screen
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card) return
+
+    const checkPosition = () => {
+      const rect = card.getBoundingClientRect()
+      const cardCenter = rect.left + rect.width / 2
+      const screenCenter = window.innerWidth / 2
+      
+      // When card center passes screen center (going left)
+      if (cardCenter < screenCenter && !hasPassedCenter) {
+        setHasPassedCenter(true)
+        setShowCode(false)
+      }
+      
+      // Reset when card goes back to the right side (for loop)
+      if (cardCenter > screenCenter + 200 && hasPassedCenter) {
+        setHasPassedCenter(false)
+        setShowCode(true)
+        setTypedLines([])
+        setCurrentLine(0)
+        setCurrentChar(0)
+      }
+    }
+
+    // Check position on animation frame for smooth detection
+    let animationId: number
+    const animate = () => {
+      checkPosition()
+      animationId = requestAnimationFrame(animate)
+    }
+    animationId = requestAnimationFrame(animate)
+
+    return () => cancelAnimationFrame(animationId)
+  }, [hasPassedCenter])
+
+  // Typing effect - only when showing code
   useEffect(() => {
     if (!isVisible || !showCode) return
 
@@ -281,33 +320,15 @@ function ProjectCard({
           setCurrentChar(0)
           setTypedLines(prev => [...prev, ""])
         }
-      } else {
-        // Finished typing, switch to preview after delay
-        clearInterval(typeInterval)
-        setTimeout(() => {
-          setShowCode(false)
-        }, 1000)
       }
     }, 30)
 
     return () => clearInterval(typeInterval)
   }, [isVisible, showCode, currentLine, currentChar, item.code])
 
-  // Switch back to code after showing preview
-  useEffect(() => {
-    if (!showCode) {
-      const timer = setTimeout(() => {
-        setShowCode(true)
-        setTypedLines([])
-        setCurrentLine(0)
-        setCurrentChar(0)
-      }, 4000)
-      return () => clearTimeout(timer)
-    }
-  }, [showCode])
-
   return (
     <div
+      ref={cardRef}
       className="relative w-[340px] h-[420px] rounded-xl overflow-hidden flex-shrink-0 mx-3 border border-border bg-card shadow-sm transition-all duration-500 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 group"
     >
       {/* Card content with slide effect */}
