@@ -18,7 +18,7 @@ const navItems = [
       { label: "Marketing Digital", href: "/#servicios" },
       { label: "Desarrollo de Apps", href: "/#servicios" },
       { label: "Contabilidad", href: "/contabilidad" },
-      { label: "Legal (CHECK)", href: "/legal" },
+      { label: "Legal", href: "/legal" },
       { label: "Reclutamiento", href: "/reclutal" },
     ]
   },
@@ -29,18 +29,27 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [isInHero, setIsInHero] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      const scrollY = window.scrollY
+      setIsScrolled(scrollY > 20)
+      // Check if we're still in the hero section (dark background)
+      setIsInHero(scrollY < window.innerHeight * 0.8)
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Determine text colors based on scroll position
+  const textColor = isInHero && !isScrolled ? "text-white/80" : "text-foreground/70"
+  const textHoverColor = "hover:text-primary"
+  const logoFilter = isInHero && !isScrolled ? "brightness-0 invert" : ""
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
           ? "bg-background/95 backdrop-blur-md border-b border-border shadow-sm"
           : "bg-transparent"
@@ -55,7 +64,7 @@ export function Header() {
               alt="Grupo Ideas MX"
               width={140}
               height={50}
-              className="h-10 md:h-12 w-auto"
+              className={`h-10 md:h-12 w-auto transition-all duration-300 ${logoFilter}`}
               priority
             />
           </Link>
@@ -72,7 +81,7 @@ export function Header() {
                 {item.children ? (
                   <>
                     <button
-                      className="flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-primary transition-colors py-2"
+                      className={`flex items-center gap-1 text-sm font-medium ${textColor} ${textHoverColor} transition-colors py-2`}
                     >
                       {item.label}
                       <ChevronDown className="w-4 h-4" />
@@ -94,7 +103,7 @@ export function Header() {
                 ) : (
                   <Link
                     href={item.href}
-                    className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
+                    className={`text-sm font-medium ${textColor} ${textHoverColor} transition-colors`}
                   >
                     {item.label}
                   </Link>
@@ -108,7 +117,7 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-foreground"
+            className={`md:hidden p-2 transition-colors ${isInHero && !isScrolled ? "text-white" : "text-foreground"}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Cerrar menu" : "Abrir menu"}
             aria-expanded={isMobileMenuOpen}

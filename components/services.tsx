@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 import {
   Globe,
   Palette,
@@ -25,6 +26,7 @@ const services = [
       "Tu web ademas de bonita; debe generar resultados. Disenos claros, faciles de usar y hechos para que tus clientes te encuentren, te entiendan y te elijan.",
     color: "#3B82F6",
     image: "/services/web.jpg",
+    href: "/#servicios",
   },
   {
     id: 2,
@@ -34,6 +36,7 @@ const services = [
       "Disenamos la imagen de tu marca para que comunique, conecte y que tus clientes la recuerden. Branding, logotipos, anuncios, lonas, volantes, tarjetas de presentacion...",
     color: "#EC4899",
     image: "/services/design.jpg",
+    href: "/#servicios",
   },
   {
     id: 3,
@@ -43,6 +46,7 @@ const services = [
       "Creamos estrategias digitales que te ayudan a conseguir mas clientes y vender mas. Usamos redes sociales, publicidad y analisis de datos para que tomes decisiones con seguridad.",
     color: "#22C55E",
     image: "/services/marketing.jpg",
+    href: "/#servicios",
   },
   {
     id: 4,
@@ -52,6 +56,7 @@ const services = [
       "Creamos aplicaciones y sistemas que facilitan tu negocio, automatizan tareas y resuelven lo que necesitas. Tecnologia hecha a tu medida para que todo funcione mejor.",
     color: "#F59E0B",
     image: "/services/apps.jpg",
+    href: "/#servicios",
   },
   {
     id: 5,
@@ -61,6 +66,7 @@ const services = [
       "Proveemos equipos de computo de alto rendimiento y ofrecemos servicios de mantenimiento preventivo. Tu infraestructura tecnologica en las mejores manos.",
     color: "#EF4444",
     image: "/services/tech.jpg",
+    href: "/#servicios",
   },
   {
     id: 6,
@@ -70,6 +76,7 @@ const services = [
       "Encontramos al talento que tu empresa necesita. Conectamos habilidades con oportunidades para fortalecer tu equipo humano.",
     color: "#8B5CF6",
     image: "/services/recruitment.jpg",
+    href: "/reclutal",
   },
   {
     id: 7,
@@ -79,6 +86,7 @@ const services = [
       "Combinamos experiencia tecnica con vision estrategica. Atendemos tanto tus desafios empresariales como tus asuntos personales, con el mismo compromiso y profesionalismo.",
     color: "#06B6D4",
     image: "/services/accounting.jpg",
+    href: "/contabilidad",
   },
   {
     id: 8,
@@ -88,6 +96,7 @@ const services = [
       "Combinamos experiencia tecnica con vision estrategica. Atendemos tanto tus desafios empresariales como tus asuntos personales. Entendemos que los retos legales no se limitan a la oficina.",
     color: "#14B8A6",
     image: "/services/legal.jpg",
+    href: "/legal",
   },
 ]
 
@@ -156,7 +165,7 @@ export function Services() {
         vy: (Math.random() - 0.5) * 0.2,
         radius: 16,
         color: service.color,
-        hasRing: true, // All service nodes have rings
+        hasRing: true,
         serviceId: i,
         icon: service.icon,
       })
@@ -219,7 +228,7 @@ export function Services() {
     })
 
     // Draw connections - thin gray lines
-    ctx.strokeStyle = "rgba(160, 160, 160, 0.35)"
+    ctx.strokeStyle = "rgba(160, 160, 160, 0.25)"
     ctx.lineWidth = 1
     connectionsRef.current.forEach((conn) => {
       const from = nodesRef.current[conn.from]
@@ -232,27 +241,25 @@ export function Services() {
 
     // Draw decoration nodes first (behind)
     nodesRef.current.forEach((node) => {
-      if (node.serviceId !== null) return // Skip service nodes
+      if (node.serviceId !== null) return
 
-      // Outer ring for some nodes
       if (node.hasRing) {
         ctx.beginPath()
         ctx.arc(node.x, node.y, node.radius * 1.6, 0, Math.PI * 2)
-        ctx.strokeStyle = node.color
+        ctx.strokeStyle = node.color + "60"
         ctx.lineWidth = 1.5
         ctx.stroke()
       }
 
-      // Main circle - flat, no gradient
       ctx.beginPath()
       ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2)
-      ctx.fillStyle = node.color
+      ctx.fillStyle = node.color + "80"
       ctx.fill()
     })
 
-    // Draw service nodes on top (with higher z-index effect)
+    // Draw service nodes on top
     nodesRef.current.forEach((node) => {
-      if (node.serviceId === null) return // Skip decoration nodes
+      if (node.serviceId === null) return
 
       const isActive = node.serviceId === activeIndex
       const isHovered = node.serviceId === hoveredNode
@@ -264,14 +271,14 @@ export function Services() {
       ctx.fillStyle = "#ffffff"
       ctx.fill()
 
-      // Outer ring - always visible for service nodes
+      // Outer ring
       ctx.beginPath()
       ctx.arc(node.x, node.y, node.radius * scale * 1.5, 0, Math.PI * 2)
       ctx.strokeStyle = node.color
       ctx.lineWidth = 2
       ctx.stroke()
 
-      // Main circle - flat color
+      // Main circle
       ctx.beginPath()
       ctx.arc(node.x, node.y, node.radius * scale, 0, Math.PI * 2)
       ctx.fillStyle = node.color
@@ -287,7 +294,7 @@ export function Services() {
       if (isActive) {
         ctx.beginPath()
         ctx.arc(node.x, node.y, node.radius * scale * 2, 0, Math.PI * 2)
-        ctx.strokeStyle = node.color + "60"
+        ctx.strokeStyle = node.color + "40"
         ctx.lineWidth = 3
         ctx.stroke()
       }
@@ -391,9 +398,13 @@ export function Services() {
   const Icon = services[activeIndex].icon
 
   return (
-    <section ref={sectionRef} id="servicios" className="py-16 md:py-24 relative overflow-hidden bg-background">
+    <section ref={sectionRef} id="servicios" className="py-20 md:py-28 relative overflow-hidden bg-background">
+      {/* Brutalist decorative lines */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[600px]">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center min-h-[600px]">
           {/* Left: Text content */}
           <div
             className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}
@@ -402,7 +413,15 @@ export function Services() {
               opacity: Math.min(1, scrollProgress * 2),
             }}
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 font-[family-name:var(--font-display)] leading-tight italic">
+            {/* Brutalist badge */}
+            <div className="inline-flex items-center gap-2 mb-6 border border-primary/40 px-3 py-1.5 bg-primary/5">
+              <div className="w-1.5 h-1.5 bg-primary animate-pulse" />
+              <span className="text-xs uppercase tracking-[0.15em] text-primary font-mono">
+                Servicios
+              </span>
+            </div>
+            
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 font-[family-name:var(--font-display)] leading-tight text-balance">
               Todo lo que necesitas en un solo lugar para seguir creciendo
             </h2>
             <p className="text-muted-foreground text-lg mb-8">Un equipo experto que impulsa tu proyecto de inicio a fin.</p>
@@ -410,7 +429,7 @@ export function Services() {
             {/* Active service details */}
             <div
               key={activeIndex}
-              className="bg-card border border-border rounded-2xl overflow-hidden mb-6 animate-in fade-in slide-in-from-left-4 duration-300"
+              className="bg-card border border-border rounded-xl overflow-hidden mb-6 animate-in fade-in slide-in-from-left-4 duration-300 shadow-sm"
             >
               {/* Service Image */}
               <div className="relative h-48 w-full bg-muted">
@@ -420,7 +439,15 @@ export function Services() {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-card/90 to-transparent" />
+                
+                {/* Service number */}
+                <div 
+                  className="absolute top-4 right-4 w-10 h-10 rounded-lg flex items-center justify-center font-mono text-white font-bold"
+                  style={{ backgroundColor: services[activeIndex].color }}
+                >
+                  {String(activeIndex + 1).padStart(2, '0')}
+                </div>
               </div>
               
               <div className="p-6 md:p-8">
@@ -435,11 +462,14 @@ export function Services() {
                 </div>
                 <p className="text-muted-foreground leading-relaxed mb-6">{services[activeIndex].description}</p>
                 <Button
+                  asChild
                   className="text-white group"
                   style={{ backgroundColor: services[activeIndex].color }}
                 >
-                  Saber mas
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <Link href={services[activeIndex].href}>
+                    Saber mas
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -447,7 +477,7 @@ export function Services() {
             {/* Scroll indicator */}
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <ChevronDown className="w-4 h-4 animate-bounce" />
-              <span>Haz clic en un nodo con icono para explorar</span>
+              <span className="font-mono text-xs">Haz clic en un nodo para explorar</span>
             </div>
           </div>
 
@@ -459,6 +489,10 @@ export function Services() {
               transform: `translateY(${(1 - scrollProgress) * -20}px) scale(${0.9 + scrollProgress * 0.1})`,
             }}
           >
+            {/* Canvas border decoration */}
+            <div className="absolute -inset-2 border border-border/50 rounded-xl pointer-events-none" />
+            <div className="absolute -inset-4 border border-border/20 rounded-2xl pointer-events-none" />
+            
             <canvas
               ref={canvasRef}
               width={canvasSize.width}
@@ -466,7 +500,7 @@ export function Services() {
               onClick={(e) => handleCanvasInteraction(e, true)}
               onMouseMove={(e) => handleCanvasInteraction(e, false)}
               onMouseLeave={() => setHoveredNode(null)}
-              className="cursor-pointer w-full h-auto"
+              className="cursor-pointer w-full h-auto rounded-lg"
               style={{ maxHeight: "600px" }}
               aria-label="Red neuronal interactiva de servicios"
             />
