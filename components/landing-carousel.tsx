@@ -28,6 +28,7 @@ export function LandingCarousel() {
   const [isVisible, setIsVisible] = useState(false)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+  const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -43,6 +44,28 @@ export function LandingCarousel() {
 
     return () => observer.disconnect()
   }, [])
+
+  // Auto-scroll animation
+  useEffect(() => {
+    if (!isVisible || isPaused) return
+
+    const scrollElement = scrollRef.current
+    if (!scrollElement) return
+
+    const autoScroll = setInterval(() => {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollElement
+      const maxScroll = scrollWidth - clientWidth
+
+      if (scrollLeft >= maxScroll - 10) {
+        // Reset to start smoothly
+        scrollElement.scrollTo({ left: 0, behavior: "smooth" })
+      } else {
+        scrollElement.scrollBy({ left: 1, behavior: "auto" })
+      }
+    }, 30)
+
+    return () => clearInterval(autoScroll)
+  }, [isVisible, isPaused])
 
   const checkScrollButtons = () => {
     if (scrollRef.current) {
@@ -131,6 +154,10 @@ export function LandingCarousel() {
           ref={scrollRef}
           className="flex gap-6 overflow-x-auto scrollbar-hide px-4 md:px-8 pb-4 snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
         >
           {landingItems.map((item, index) => (
             <ProjectCard

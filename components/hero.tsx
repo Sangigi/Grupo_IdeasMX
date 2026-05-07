@@ -190,28 +190,38 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right side - Visual element */}
+          {/* Right side - Visual element with orbital animation */}
           <div className="hidden lg:flex items-center justify-center">
             <div className="relative w-80 h-80">
               {/* Central icon */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center backdrop-blur-sm">
                   <svg className="w-12 h-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                   </svg>
                 </div>
               </div>
               
-              {/* Orbital rings */}
-              <div className="absolute inset-0 rounded-full border border-primary/20 animate-[spin_20s_linear_infinite]" />
-              <div className="absolute inset-4 rounded-full border border-green-500/20 animate-[spin_15s_linear_infinite_reverse]" />
-              <div className="absolute inset-8 rounded-full border border-violet-500/20 animate-[spin_25s_linear_infinite]" />
+              {/* Outer orbit with rotating dot */}
+              <div className="absolute inset-0 rounded-full border border-primary/20 animate-[spin_20s_linear_infinite]">
+                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary shadow-lg shadow-primary/50" />
+              </div>
               
-              {/* Floating dots */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary/60" />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-green-500/60" />
-              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-2 h-2 rounded-full bg-violet-500/60" />
-              <div className="absolute top-1/2 right-0 -translate-y-1/2 w-3 h-3 rounded-full bg-primary/60" />
+              {/* Middle orbit with rotating dot - reverse direction */}
+              <div className="absolute inset-8 rounded-full border border-green-500/20 animate-[spin_12s_linear_infinite_reverse]">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-green-500 shadow-lg shadow-green-500/50" />
+              </div>
+              
+              {/* Inner orbit with rotating dot */}
+              <div className="absolute inset-16 rounded-full border border-violet-500/20 animate-[spin_8s_linear_infinite]">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-violet-500 shadow-lg shadow-violet-500/50" />
+              </div>
+              
+              {/* Extra outer orbit - slower */}
+              <div className="absolute -inset-4 rounded-full border border-primary/10 animate-[spin_30s_linear_infinite]">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary/40" />
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-green-500/40" />
+              </div>
             </div>
           </div>
         </div>
