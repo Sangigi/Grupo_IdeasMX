@@ -310,8 +310,8 @@ function ProjectCard({
     <div
       className="relative w-[340px] h-[420px] rounded-xl overflow-hidden flex-shrink-0 mx-3 border border-border bg-card shadow-sm transition-all duration-500 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 group"
     >
-      {/* Card content with flip effect */}
-      <div className={`absolute inset-0 transition-all duration-700 ${showCode ? "opacity-100" : "opacity-0"}`}>
+      {/* Card content with slide effect */}
+      <div className={`absolute inset-0 transition-all duration-700 ease-in-out ${showCode ? "translate-x-0" : "-translate-x-full"}`}>
         {/* Code editor view */}
         <div className="h-full flex flex-col bg-[#1e1e1e] text-white">
           {/* Editor header */}
@@ -351,8 +351,8 @@ function ProjectCard({
         </div>
       </div>
 
-      {/* Website preview view */}
-      <div className={`absolute inset-0 transition-all duration-700 ${showCode ? "opacity-0" : "opacity-100"}`}>
+      {/* Website preview view - slides in from right */}
+      <div className={`absolute inset-0 transition-all duration-700 ease-in-out ${showCode ? "translate-x-full" : "translate-x-0"}`}>
         {/* Mock website preview */}
         <div className="h-full flex flex-col">
           {/* Browser chrome */}
