@@ -146,13 +146,13 @@ function Brain({ mousePosition }: { mousePosition: { x: number; y: number } }) {
         {/* Core brain shape */}
         <Sphere args={[1.8, 64, 64]}>
           <MeshDistortMaterial
-            color="#0a0a0a"
-            roughness={0.2}
-            metalness={0.8}
+            color="#e0e7ff"
+            roughness={0.3}
+            metalness={0.6}
             distort={0.2}
             speed={2}
             transparent
-            opacity={0.3}
+            opacity={0.4}
           />
         </Sphere>
         

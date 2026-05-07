@@ -29,23 +29,20 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
-  const [isInHero, setIsInHero] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY
       setIsScrolled(scrollY > 20)
-      // Check if we're still in the hero section (dark background)
-      setIsInHero(scrollY < window.innerHeight * 0.8)
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Determine text colors based on scroll position
-  const textColor = isInHero && !isScrolled ? "text-white/80" : "text-foreground/70"
+  // Always use dark text since background is white
+  const textColor = "text-foreground/70"
   const textHoverColor = "hover:text-primary"
-  const logoFilter = isInHero && !isScrolled ? "brightness-0 invert" : ""
+  const logoFilter = ""
 
   return (
     <header
@@ -117,7 +114,7 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className={`md:hidden p-2 transition-colors ${isInHero && !isScrolled ? "text-white" : "text-foreground"}`}
+            className="md:hidden p-2 transition-colors text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Cerrar menu" : "Abrir menu"}
             aria-expanded={isMobileMenuOpen}

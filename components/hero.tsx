@@ -86,16 +86,16 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="inicio"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030303]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white"
     >
-      {/* Brutalist grid pattern */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-40 pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)
+              linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px)
             `,
             backgroundSize: "60px 60px",
           }}
@@ -107,10 +107,10 @@ export function Hero() {
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       
       {/* Corner decorations */}
-      <div className="absolute top-8 left-8 w-16 h-16 border-l-2 border-t-2 border-primary/40 pointer-events-none" />
-      <div className="absolute top-8 right-8 w-16 h-16 border-r-2 border-t-2 border-primary/40 pointer-events-none" />
-      <div className="absolute bottom-8 left-8 w-16 h-16 border-l-2 border-b-2 border-primary/40 pointer-events-none" />
-      <div className="absolute bottom-8 right-8 w-16 h-16 border-r-2 border-b-2 border-primary/40 pointer-events-none" />
+      <div className="absolute top-8 left-8 w-16 h-16 border-l-2 border-t-2 border-primary/30 pointer-events-none" />
+      <div className="absolute top-8 right-8 w-16 h-16 border-r-2 border-t-2 border-primary/30 pointer-events-none" />
+      <div className="absolute bottom-8 left-8 w-16 h-16 border-l-2 border-b-2 border-primary/30 pointer-events-none" />
+      <div className="absolute bottom-8 right-8 w-16 h-16 border-r-2 border-b-2 border-primary/30 pointer-events-none" />
 
       {/* 3D Brain Scene */}
       <div 
@@ -140,15 +140,15 @@ export function Hero() {
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
             }`}
           >
-            {/* Brutalist badge */}
-            <div className="inline-flex items-center gap-2 mb-6 border border-primary/40 px-4 py-2 bg-primary/5">
-              <div className="w-2 h-2 bg-primary animate-pulse" />
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 mb-6 border border-primary/40 px-4 py-2 bg-primary/5 rounded-md">
+              <div className="w-2 h-2 bg-primary animate-pulse rounded-full" />
               <span className="text-xs uppercase tracking-[0.2em] text-primary font-mono">
                 Creatividad + Tecnologia
               </span>
             </div>
 
-            <p className="text-white/60 text-lg md:text-xl mb-4 font-light tracking-wide">
+            <p className="text-muted-foreground text-lg md:text-xl mb-4 font-light tracking-wide">
               Te ayudamos a
             </p>
 
@@ -162,15 +162,15 @@ export function Hero() {
               </span>
             </h1>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-8">
               tu negocio.
             </h2>
 
-            <p className="text-white/50 text-base md:text-lg max-w-lg mb-10 leading-relaxed">
+            <p className="text-muted-foreground text-base md:text-lg max-w-lg mb-10 leading-relaxed">
               En Grupo Ideas hacemos que la creatividad y la tecnologia trabajen para ti en el mundo digital.
             </p>
 
-            {/* Brutalist CTA buttons */}
+            {/* CTA buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 asChild
@@ -188,25 +188,25 @@ export function Hero() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="px-8 py-6 text-lg border-white/20 hover:bg-white/5 hover:border-white/40 text-white bg-transparent"
+                className="px-8 py-6 text-lg border-border hover:bg-muted hover:border-primary/40 text-foreground"
               >
                 <Link href="#servicios">Ver servicios</Link>
               </Button>
             </div>
 
             {/* Stats row */}
-            <div className="flex gap-8 mt-12 pt-8 border-t border-white/10">
+            <div className="flex gap-8 mt-12 pt-8 border-t border-border">
               <div>
                 <div className="text-3xl font-bold text-primary font-mono">100+</div>
-                <div className="text-xs uppercase tracking-wider text-white/40">Proyectos</div>
+                <div className="text-xs uppercase tracking-wider text-muted-foreground">Proyectos</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-primary font-mono">8+</div>
-                <div className="text-xs uppercase tracking-wider text-white/40">Servicios</div>
+                <div className="text-xs uppercase tracking-wider text-muted-foreground">Servicios</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-primary font-mono">5+</div>
-                <div className="text-xs uppercase tracking-wider text-white/40">Anos</div>
+                <div className="text-xs uppercase tracking-wider text-muted-foreground">Anos</div>
               </div>
             </div>
           </div>
@@ -225,8 +225,8 @@ export function Hero() {
           opacity: isVisible ? 0.6 - scrollProgress * 2 : 0,
         }}
       >
-        <MousePointer2 className="w-4 h-4 text-white/60 animate-pulse" />
-        <span className="text-xs text-white/40 uppercase tracking-wider font-mono">
+        <MousePointer2 className="w-4 h-4 text-muted-foreground animate-pulse" />
+        <span className="text-xs text-muted-foreground uppercase tracking-wider font-mono">
           Interactua con el cerebro
         </span>
       </div>
@@ -240,14 +240,14 @@ export function Hero() {
           opacity: isVisible ? 1 - scrollProgress * 3 : 0,
         }}
       >
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+        <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex justify-center">
           <div className="w-1.5 h-3 bg-primary rounded-full mt-2 animate-bounce" />
         </div>
       </div>
 
       {/* Floating labels */}
       <div className="absolute top-1/4 right-10 hidden xl:block">
-        <div className="text-xs font-mono text-white/30 rotate-90 origin-left">
+        <div className="text-xs font-mono text-muted-foreground/50 rotate-90 origin-left">
           GRUPO IDEAS MX // 2024
         </div>
       </div>
