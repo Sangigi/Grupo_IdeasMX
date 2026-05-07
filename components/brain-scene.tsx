@@ -40,7 +40,7 @@ function generateConnections(points: THREE.Vector3[], maxDistance: number): [THR
   for (let i = 0; i < points.length; i++) {
     for (let j = i + 1; j < points.length; j++) {
       const dist = points[i].distanceTo(points[j])
-      if (dist < maxDistance && Math.random() > 0.7) {
+      if (dist < maxDistance && Math.random() > 0.6) {
         connections.push([points[i], points[j]])
       }
     }
@@ -58,7 +58,7 @@ function NeuralNode({ position, delay }: NeuralNodeProps) {
   const meshRef = useRef<THREE.Mesh>(null)
   const pulseRef = useRef(Math.random() * Math.PI * 2)
   
-  useFrame((state) => {
+  useFrame(() => {
     if (meshRef.current) {
       pulseRef.current += 0.02
       const scale = 1 + Math.sin(pulseRef.current + delay) * 0.3
@@ -67,20 +67,20 @@ function NeuralNode({ position, delay }: NeuralNodeProps) {
       // Subtle glow effect
       const material = meshRef.current.material as THREE.MeshStandardMaterial
       if (material.emissiveIntensity !== undefined) {
-        material.emissiveIntensity = 0.5 + Math.sin(pulseRef.current * 2 + delay) * 0.5
+        material.emissiveIntensity = 0.8 + Math.sin(pulseRef.current * 2 + delay) * 0.5
       }
     }
   })
   
   return (
     <mesh ref={meshRef} position={position}>
-      <sphereGeometry args={[0.04, 8, 8]} />
+      <sphereGeometry args={[0.06, 12, 12]} />
       <meshStandardMaterial
-        color="#3b82f6"
-        emissive="#3b82f6"
-        emissiveIntensity={0.5}
+        color="#6366f1"
+        emissive="#6366f1"
+        emissiveIntensity={0.8}
         transparent
-        opacity={0.9}
+        opacity={0.95}
       />
     </mesh>
   )
@@ -98,8 +98,8 @@ function NeuralConnection({ start, end, delay }: NeuralConnectionProps) {
   const phaseRef = useRef(Math.random() * Math.PI * 2)
   
   useFrame(() => {
-    phaseRef.current += 0.015
-    opacityRef.current = 0.1 + Math.sin(phaseRef.current + delay) * 0.1
+    phaseRef.current += 0.02
+    opacityRef.current = 0.25 + Math.sin(phaseRef.current + delay) * 0.2
     
     if (lineRef.current) {
       const material = lineRef.current.material as THREE.LineBasicMaterial
@@ -111,10 +111,10 @@ function NeuralConnection({ start, end, delay }: NeuralConnectionProps) {
     <Line
       ref={lineRef}
       points={[start, end]}
-      color="#3b82f6"
-      lineWidth={0.5}
+      color="#8b5cf6"
+      lineWidth={1.2}
       transparent
-      opacity={0.2}
+      opacity={0.35}
     />
   )
 }
@@ -124,8 +124,8 @@ function Brain({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   const targetRotation = useRef({ x: 0, y: 0 })
   
   const { points, connections } = useMemo(() => {
-    const pts = generateBrainPoints(200)
-    const conns = generateConnections(pts, 0.8)
+    const pts = generateBrainPoints(180)
+    const conns = generateConnections(pts, 0.9)
     return { points: pts, connections: conns }
   }, [])
   
@@ -136,23 +136,23 @@ function Brain({ mousePosition }: { mousePosition: { x: number; y: number } }) {
       targetRotation.current.y = mousePosition.x * 0.5
       
       groupRef.current.rotation.x += (targetRotation.current.x - groupRef.current.rotation.x) * 0.02
-      groupRef.current.rotation.y += (targetRotation.current.y + state.clock.elapsedTime * 0.1 - groupRef.current.rotation.y) * 0.02
+      groupRef.current.rotation.y += (targetRotation.current.y + state.clock.elapsedTime * 0.08 - groupRef.current.rotation.y) * 0.02
     }
   })
   
   return (
-    <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
+    <Float speed={1.5} rotationIntensity={0.15} floatIntensity={0.3}>
       <group ref={groupRef}>
-        {/* Core brain shape */}
-        <Sphere args={[1.8, 64, 64]}>
+        {/* Core brain shape - subtle inner glow */}
+        <Sphere args={[1.6, 64, 64]}>
           <MeshDistortMaterial
-            color="#e0e7ff"
-            roughness={0.3}
-            metalness={0.6}
-            distort={0.2}
-            speed={2}
+            color="#c7d2fe"
+            roughness={0.4}
+            metalness={0.3}
+            distort={0.15}
+            speed={1.5}
             transparent
-            opacity={0.4}
+            opacity={0.25}
           />
         </Sphere>
         
@@ -166,18 +166,18 @@ function Brain({ mousePosition }: { mousePosition: { x: number; y: number } }) {
           <NeuralConnection key={i} start={conn[0]} end={conn[1]} delay={i * 0.05} />
         ))}
         
-        {/* Outer glow rings */}
+        {/* Outer rings - more visible */}
         <mesh>
-          <torusGeometry args={[2.5, 0.02, 8, 100]} />
-          <meshBasicMaterial color="#3b82f6" transparent opacity={0.3} />
+          <torusGeometry args={[2.5, 0.025, 16, 100]} />
+          <meshBasicMaterial color="#a78bfa" transparent opacity={0.5} />
         </mesh>
         <mesh rotation={[Math.PI / 3, 0, 0]}>
-          <torusGeometry args={[2.3, 0.015, 8, 100]} />
-          <meshBasicMaterial color="#22c55e" transparent opacity={0.2} />
+          <torusGeometry args={[2.3, 0.02, 16, 100]} />
+          <meshBasicMaterial color="#22c55e" transparent opacity={0.4} />
         </mesh>
         <mesh rotation={[Math.PI / 2, Math.PI / 4, 0]}>
-          <torusGeometry args={[2.7, 0.01, 8, 100]} />
-          <meshBasicMaterial color="#3b82f6" transparent opacity={0.15} />
+          <torusGeometry args={[2.7, 0.015, 16, 100]} />
+          <meshBasicMaterial color="#6366f1" transparent opacity={0.35} />
         </mesh>
       </group>
     </Float>
@@ -204,14 +204,14 @@ export function BrainScene({ mousePosition }: { mousePosition: { x: number; y: n
         style={{ background: "transparent" }}
       >
         <CameraController />
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
-        <pointLight position={[-10, -10, -5]} intensity={0.5} color="#3b82f6" />
+        <ambientLight intensity={0.6} />
+        <pointLight position={[10, 10, 10]} intensity={1.2} color="#ffffff" />
+        <pointLight position={[-10, -10, -5]} intensity={0.8} color="#8b5cf6" />
         <spotLight
           position={[5, 5, 5]}
           angle={0.3}
           penumbra={1}
-          intensity={1}
+          intensity={0.8}
           color="#22c55e"
         />
         <Brain mousePosition={mousePosition} />
