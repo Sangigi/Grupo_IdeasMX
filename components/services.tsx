@@ -241,8 +241,8 @@ const NeuralNetworkCanvas = memo(function NeuralNetworkCanvas({
       const pulses = pulsesRef.current
       const mouse = mouseRef.current
 
-      // Clear with slight trail effect for smoother animation
-      ctx.fillStyle = "rgba(250, 250, 250, 0.15)"
+      // Clear with white background (no trail effect for cleaner look)
+      ctx.fillStyle = "#ffffff"
       ctx.fillRect(0, 0, width, height)
 
       // Update particle positions
@@ -601,7 +601,7 @@ const NeuralNetworkCanvas = memo(function NeuralNetworkCanvas({
         onMouseMove={handleMouseMove}
         onMouseLeave={() => onNodeHover(null)}
         onClick={handleClick}
-        className="w-full h-full cursor-pointer rounded-xl bg-gradient-to-br from-background via-background to-muted/30"
+        className="w-full h-full cursor-pointer rounded-xl bg-white"
         style={{ touchAction: "none" }}
         aria-label="Red neuronal interactiva - haz clic en los nodos para explorar servicios"
       />
@@ -621,21 +621,21 @@ const ServiceCard = memo(function ServiceCard({ service, index }: { service: typ
   const Icon = service.icon
 
   return (
-    <div className="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 animate-in fade-in slide-in-from-bottom-4">
+    <div className="group h-full flex flex-col bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 animate-in fade-in slide-in-from-bottom-4">
       {/* Service Image */}
-      <div className="relative h-52 w-full bg-muted overflow-hidden">
+      <div className="relative h-48 w-full bg-muted overflow-hidden flex-shrink-0">
         <Image
           src={service.image}
           alt={service.title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
 
         {/* Service number badge */}
         <div
-          className="absolute top-4 right-4 w-11 h-11 rounded-xl flex items-center justify-center font-mono text-white font-bold text-lg shadow-lg"
+          className="absolute top-3 right-3 w-10 h-10 rounded-lg flex items-center justify-center font-mono text-white font-bold text-sm shadow-lg"
           style={{ backgroundColor: service.color }}
         >
           {String(index + 1).padStart(2, "0")}
@@ -643,22 +643,22 @@ const ServiceCard = memo(function ServiceCard({ service, index }: { service: typ
 
         {/* Icon floating */}
         <div
-          className="absolute bottom-4 left-4 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300"
+          className="absolute bottom-3 left-3 w-12 h-12 rounded-lg flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300"
           style={{ backgroundColor: service.color }}
         >
-          <Icon className="w-7 h-7 text-white" />
+          <Icon className="w-6 h-6 text-white" />
         </div>
       </div>
 
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+      <div className="p-5 flex flex-col flex-grow">
+        <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
           {service.title}
         </h3>
-        <p className="text-muted-foreground leading-relaxed mb-5 text-sm">{service.description}</p>
+        <p className="text-muted-foreground leading-relaxed text-sm flex-grow">{service.description}</p>
         <Button
           asChild
           variant="outline"
-          className="w-full group/btn hover:text-white transition-colors"
+          className="w-full group/btn hover:text-white transition-colors mt-4"
           style={
             {
               "--hover-bg": service.color,

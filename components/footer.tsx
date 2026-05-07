@@ -121,17 +121,17 @@ export function Footer() {
               Creado con pasion por Grupo Ideas MX
             </p>
             
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 md:gap-6 flex-wrap">
               <a
                 href="tel:+525575086614"
                 className="text-sm text-white/40 hover:text-primary transition-colors"
               >
                 55-7508-6614
               </a>
-              <span className="text-white/20">|</span>
+              <span className="text-white/20 hidden md:inline">|</span>
               <a
                 href="mailto:contacto@grupoideasmx.com"
-                className="text-sm text-white/40 hover:text-primary transition-colors"
+                className="text-sm text-white/40 hover:text-primary transition-colors break-all md:break-normal"
               >
                 contacto@grupoideasmx.com
               </a>
