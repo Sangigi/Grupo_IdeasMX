@@ -259,12 +259,16 @@ function ProjectCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const [showCode, setShowCode] = useState(true)
-  const [hasPassedCenter, setHasPassedCenter] = useState(false)
+  const [hasPassedLine, setHasPassedLine] = useState(false)
   const [typedLines, setTypedLines] = useState<string[]>([])
   const [currentLine, setCurrentLine] = useState(0)
   const [currentChar, setCurrentChar] = useState(0)
+  const [typingSpeed, setTypingSpeed] = useState(150) // Start slow
 
-  // Detect when card passes center of screen
+  // Transformation line at 70% of screen width
+  const TRANSFORM_LINE = 0.70
+
+  // Detect position and adjust typing speed
   useEffect(() => {
     const card = cardRef.current
     if (!card) return
@@ -272,21 +276,35 @@ function ProjectCard({
     const checkPosition = () => {
       const rect = card.getBoundingClientRect()
       const cardCenter = rect.left + rect.width / 2
-      const screenCenter = window.innerWidth / 2
+      const screenWidth = window.innerWidth
+      const transformPoint = screenWidth * TRANSFORM_LINE
       
-      // When card center passes screen center (going left)
-      if (cardCenter < screenCenter && !hasPassedCenter) {
-        setHasPassedCenter(true)
+      // Calculate distance to transform line (as percentage of screen)
+      const distanceToLine = (cardCenter - transformPoint) / screenWidth
+      
+      // Adjust typing speed based on distance
+      // Far away (right side): slow (150ms), Close to line: fast (15ms)
+      if (distanceToLine > 0 && showCode) {
+        // Card is to the right of transform line
+        // distanceToLine ranges from ~0.3 (far right) to 0 (at line)
+        const speed = Math.max(15, Math.min(150, distanceToLine * 500))
+        setTypingSpeed(speed)
+      }
+      
+      // When card passes the transform line (70% of screen)
+      if (cardCenter < transformPoint && !hasPassedLine) {
+        setHasPassedLine(true)
         setShowCode(false)
       }
       
       // Reset when card goes back to the right side (for loop)
-      if (cardCenter > screenCenter + 200 && hasPassedCenter) {
-        setHasPassedCenter(false)
+      if (cardCenter > screenWidth * 0.85 && hasPassedLine) {
+        setHasPassedLine(false)
         setShowCode(true)
         setTypedLines([])
         setCurrentLine(0)
         setCurrentChar(0)
+        setTypingSpeed(150)
       }
     }
 
@@ -299,13 +317,13 @@ function ProjectCard({
     animationId = requestAnimationFrame(animate)
 
     return () => cancelAnimationFrame(animationId)
-  }, [hasPassedCenter])
+  }, [hasPassedLine, showCode])
 
-  // Typing effect - only when showing code
+  // Typing effect with dynamic speed
   useEffect(() => {
     if (!isVisible || !showCode) return
 
-    const typeInterval = setInterval(() => {
+    const typeInterval = setTimeout(() => {
       if (currentLine < item.code.length) {
         const line = item.code[currentLine]
         if (currentChar < line.length) {
@@ -321,10 +339,10 @@ function ProjectCard({
           setTypedLines(prev => [...prev, ""])
         }
       }
-    }, 30)
+    }, typingSpeed)
 
-    return () => clearInterval(typeInterval)
-  }, [isVisible, showCode, currentLine, currentChar, item.code])
+    return () => clearTimeout(typeInterval)
+  }, [isVisible, showCode, currentLine, currentChar, item.code, typingSpeed])
 
   return (
     <div
