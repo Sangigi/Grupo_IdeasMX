@@ -115,10 +115,26 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
           {/* Left side - Text content */}
           <div
-            className={`transition-all duration-1000 ${
+            className={`relative transition-all duration-1000 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
             }`}
           >
+            {/* Left orbit decoration - positioned near the text */}
+            <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-40 h-40 hidden xl:block pointer-events-none">
+              {/* Outer orbit */}
+              <div className="absolute inset-0 rounded-full border border-primary/20 animate-[spin_15s_linear_infinite]">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary shadow-lg shadow-primary/50" />
+              </div>
+              {/* Middle orbit - reverse */}
+              <div className="absolute inset-4 rounded-full border border-green-500/15 animate-[spin_10s_linear_infinite_reverse]">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-green-500 shadow-lg shadow-green-500/50" />
+              </div>
+              {/* Inner orbit */}
+              <div className="absolute inset-8 rounded-full border border-violet-500/15 animate-[spin_7s_linear_infinite]">
+                <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-violet-500 shadow-lg shadow-violet-500/50" />
+              </div>
+            </div>
+
             {/* Badge */}
             <div className="inline-flex items-center gap-2 mb-6 border border-primary/40 px-4 py-2 bg-primary/5 rounded-md">
               <div className="w-2 h-2 bg-primary animate-pulse rounded-full" />

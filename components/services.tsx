@@ -165,9 +165,9 @@ export function Services() {
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-transparent" />
                 
                 {/* Central display */}
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center z-10">
                   <div 
-                    className="w-32 h-32 rounded-2xl flex items-center justify-center transition-all duration-500"
+                    className="w-32 h-32 rounded-2xl flex items-center justify-center transition-all duration-500 bg-white shadow-lg"
                     style={{ backgroundColor: `${services[activeService].color}15` }}
                   >
                     <ActiveIcon 
