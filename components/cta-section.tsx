@@ -10,28 +10,12 @@ export function CTASection() {
   const sectionRef = useRef<HTMLElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [animationPhase, setAnimationPhase] = useState(0)
-  const [hasAnimated, setHasAnimated] = useState(false)
-  const [scrollProgress, setScrollProgress] = useState(0)
-
-  // Scroll progress
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return
-      const rect = sectionRef.current.getBoundingClientRect()
-      const progress = Math.max(0, Math.min(1, 1 - rect.top / window.innerHeight))
-      setScrollProgress(progress)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
+        if (entry.isIntersecting) {
           setIsVisible(true)
-          setHasAnimated(true)
         }
       },
       { threshold: 0.3 }
@@ -42,7 +26,7 @@ export function CTASection() {
     }
 
     return () => observer.disconnect()
-  }, [hasAnimated])
+  }, [])
 
   // Animation sequence - runs only once
   useEffect(() => {
@@ -50,15 +34,13 @@ export function CTASection() {
 
     const timers = [
       setTimeout(() => setAnimationPhase(1), 200),
-      setTimeout(() => setAnimationPhase(2), 800),
-      setTimeout(() => setAnimationPhase(3), 1400),
-      setTimeout(() => setAnimationPhase(4), 2000),
+      setTimeout(() => setAnimationPhase(2), 600),
+      setTimeout(() => setAnimationPhase(3), 1000),
+      setTimeout(() => setAnimationPhase(4), 1400),
     ]
 
     return () => timers.forEach(clearTimeout)
   }, [isVisible])
-
-  const mainText = "Haz realidad tu idea"
 
   return (
     <section ref={sectionRef} id="contacto" className="py-28 md:py-36 relative overflow-hidden bg-white">
@@ -85,73 +67,30 @@ export function CTASection() {
       <div className="absolute bottom-8 left-8 w-16 h-16 border-l-2 border-b-2 border-primary/20 pointer-events-none hidden md:block" />
       <div className="absolute bottom-8 right-8 w-16 h-16 border-r-2 border-b-2 border-primary/20 pointer-events-none hidden md:block" />
 
-      {/* Floating decorative elements */}
-      <div className="absolute top-1/4 left-10 w-2 h-2 bg-primary rounded-full animate-pulse opacity-50 hidden lg:block" />
-      <div className="absolute top-1/3 right-20 w-3 h-3 bg-primary/40 rounded-full animate-pulse hidden lg:block" style={{ animationDelay: "0.5s" }} />
-      <div className="absolute bottom-1/4 left-1/4 w-2 h-2 bg-primary/30 rounded-full animate-pulse hidden lg:block" style={{ animationDelay: "1s" }} />
-
-      <div
-        className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
-        style={{
-          transform: `translateY(${(1 - scrollProgress) * 50}px)`,
-          opacity: Math.min(1, scrollProgress * 1.5),
-        }}
-      >
-        {/* Animated Logo */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        {/* Logo */}
         <div
-          className={`mb-10 transition-all duration-700 ${animationPhase >= 1 ? "opacity-100" : "opacity-0"}`}
-        >
-          <div className="relative inline-block">
-            <Image
-              src="/logo.jpg"
-              alt="Grupo Ideas MX"
-              width={240}
-              height={96}
-              className="h-20 md:h-24 w-auto mx-auto transition-all duration-1000"
-              style={{
-                filter: animationPhase >= 1 ? "blur(0px)" : "blur(20px)",
-                transform: animationPhase >= 1 
-                  ? "scale(1) translateY(0)" 
-                  : "scale(0.5) translateY(30px)",
-                opacity: animationPhase >= 1 ? 1 : 0,
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Main heading with character animation */}
-        <div
-          className={`mb-6 overflow-hidden transition-all duration-700 ${
-            animationPhase >= 2 ? "opacity-100" : "opacity-0"
+          className={`mb-10 transition-all duration-700 ${
+            animationPhase >= 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground font-[family-name:var(--font-display)]">
-            {mainText.split("").map((letter, i) => {
-              const isSpace = letter === " "
-              const delay = i * 40
-
-              return (
-                <span
-                  key={i}
-                  className="inline-block transition-all"
-                  style={{
-                    transform: animationPhase >= 2 
-                      ? "translateY(0) scaleY(1) skewX(0deg)" 
-                      : "translateY(50px) scaleY(2) skewX(-20deg)",
-                    opacity: animationPhase >= 2 ? 1 : 0,
-                    filter: animationPhase >= 2 ? "blur(0px)" : "blur(8px)",
-                    transitionDelay: `${delay}ms`,
-                    transitionDuration: "600ms",
-                    transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-                    width: isSpace ? "0.25em" : "auto",
-                  }}
-                >
-                  {letter}
-                </span>
-              )
-            })}
-          </h2>
+          <Image
+            src="/logo.jpg"
+            alt="Grupo Ideas MX"
+            width={240}
+            height={96}
+            className="h-20 md:h-24 w-auto mx-auto"
+          />
         </div>
+
+        {/* Main heading */}
+        <h2
+          className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground font-[family-name:var(--font-display)] mb-6 transition-all duration-700 ${
+            animationPhase >= 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          Haz realidad tu idea
+        </h2>
 
         {/* Subtext */}
         <div className="space-y-4 mb-12">
@@ -164,10 +103,9 @@ export function CTASection() {
           </p>
 
           <p
-            className={`text-lg text-muted-foreground/70 transition-all duration-700 ${
+            className={`text-lg text-muted-foreground/70 transition-all duration-700 delay-100 ${
               animationPhase >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
-            style={{ transitionDelay: "200ms" }}
           >
             Platicanos tu proyecto y te diremos como hacerlo realidad.
           </p>
@@ -175,23 +113,17 @@ export function CTASection() {
 
         {/* CTA Button */}
         <div
-          className={`transition-all duration-700 mb-12 ${
-            animationPhase >= 4 ? "opacity-100" : "opacity-0"
+          className={`mb-12 transition-all duration-700 ${
+            animationPhase >= 4 ? "opacity-100 scale-100" : "opacity-0 scale-90"
           }`}
-          style={{
-            transform: animationPhase >= 4 
-              ? "scale(1) translateY(0)" 
-              : "scale(0.8) translateY(20px)",
-            transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-          }}
         >
           <Button
             asChild
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-8 text-xl font-semibold group relative overflow-hidden"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-8 text-xl font-semibold group"
           >
             <Link href="mailto:contacto@grupoideasmx.com">
-              <span className="relative z-10 flex items-center">
+              <span className="flex items-center">
                 Cotiza ya!
                 <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-2" />
               </span>
@@ -201,10 +133,9 @@ export function CTASection() {
 
         {/* Contact info cards */}
         <div
-          className={`grid sm:grid-cols-3 gap-4 max-w-3xl mx-auto transition-all duration-700 ${
-            animationPhase >= 4 ? "opacity-100" : "opacity-0"
+          className={`grid sm:grid-cols-3 gap-4 max-w-3xl mx-auto transition-all duration-700 delay-200 ${
+            animationPhase >= 4 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
-          style={{ transitionDelay: "200ms" }}
         >
           <a
             href="tel:+525575086614"

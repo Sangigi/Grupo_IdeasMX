@@ -1,20 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useState, Suspense } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, MousePointer2 } from "lucide-react"
-
-// Dynamically import the 3D scene to avoid SSR issues
-const BrainScene = dynamic(() => import("./brain-scene").then((mod) => mod.BrainScene), {
-  ssr: false,
-  loading: () => (
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="w-32 h-32 border-2 border-primary/20 rounded-full animate-pulse" />
-    </div>
-  ),
-})
+import { ArrowRight } from "lucide-react"
 
 const words = ["CRECER", "INNOVAR", "DESTACAR", "TRIUNFAR"]
 
@@ -23,20 +12,6 @@ export function Hero() {
   const [isAnimating, setIsAnimating] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-
-  // Track mouse position for 3D interaction
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 2
-      const y = (e.clientY / window.innerHeight - 0.5) * 2
-      setMousePosition({ x, y })
-    }
-
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -53,19 +28,6 @@ export function Hero() {
     }
 
     return () => observer.disconnect()
-  }, [])
-
-  // Scroll parallax
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return
-      const rect = sectionRef.current.getBoundingClientRect()
-      const progress = Math.max(0, Math.min(1, -rect.top / (rect.height * 0.5)))
-      setScrollProgress(progress)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   useEffect(() => {
@@ -88,7 +50,7 @@ export function Hero() {
       id="inicio"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white"
     >
-      {/* Subtle grid pattern */}
+      {/* Subtle grid pattern - CSS only */}
       <div className="absolute inset-0 opacity-40 pointer-events-none">
         <div
           className="absolute inset-0"
@@ -112,27 +74,44 @@ export function Hero() {
       <div className="absolute bottom-8 left-8 w-16 h-16 border-l-2 border-b-2 border-primary/30 pointer-events-none" />
       <div className="absolute bottom-8 right-8 w-16 h-16 border-r-2 border-b-2 border-primary/30 pointer-events-none" />
 
-      {/* 3D Brain Scene */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          opacity: 1 - scrollProgress * 1.5,
-          transform: `scale(${1 + scrollProgress * 0.2})`,
-        }}
-      >
-        <Suspense fallback={null}>
-          <BrainScene mousePosition={mousePosition} />
-        </Suspense>
+      {/* Lightweight animated background - CSS only */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Animated gradient orbs using CSS */}
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 rounded-full bg-green-500/5 blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-violet-500/3 blur-3xl animate-pulse" style={{ animationDelay: "0.5s" }} />
+        
+        {/* Decorative circles */}
+        <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-20" viewBox="0 0 400 400">
+          <circle cx="200" cy="200" r="150" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-primary" />
+          <circle cx="200" cy="200" r="120" fill="none" stroke="currentColor" strokeWidth="0.3" className="text-green-500" />
+          <circle cx="200" cy="200" r="180" fill="none" stroke="currentColor" strokeWidth="0.3" className="text-primary" />
+        </svg>
+
+        {/* Static neural nodes pattern */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px]">
+          {[...Array(12)].map((_, i) => {
+            const angle = (i / 12) * Math.PI * 2
+            const radius = 150 + (i % 3) * 40
+            const x = 250 + Math.cos(angle) * radius
+            const y = 250 + Math.sin(angle) * radius
+            return (
+              <div
+                key={i}
+                className="absolute w-3 h-3 rounded-full bg-primary/30"
+                style={{
+                  left: `${x}px`,
+                  top: `${y}px`,
+                  transform: "translate(-50%, -50%)",
+                }}
+              />
+            )
+          })}
+        </div>
       </div>
 
       {/* Main content */}
-      <div
-        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20"
-        style={{
-          transform: `translateY(${scrollProgress * 100}px)`,
-          opacity: 1 - scrollProgress * 1.5,
-        }}
-      >
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
           {/* Left side - Text content */}
           <div
@@ -211,24 +190,31 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right side - Reserved for 3D brain (behind content) */}
-          <div className="hidden lg:block" />
+          {/* Right side - Visual element */}
+          <div className="hidden lg:flex items-center justify-center">
+            <div className="relative w-80 h-80">
+              {/* Central icon */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <svg className="w-12 h-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+              </div>
+              
+              {/* Orbital rings */}
+              <div className="absolute inset-0 rounded-full border border-primary/20 animate-[spin_20s_linear_infinite]" />
+              <div className="absolute inset-4 rounded-full border border-green-500/20 animate-[spin_15s_linear_infinite_reverse]" />
+              <div className="absolute inset-8 rounded-full border border-violet-500/20 animate-[spin_25s_linear_infinite]" />
+              
+              {/* Floating dots */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary/60" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-green-500/60" />
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-2 h-2 rounded-full bg-violet-500/60" />
+              <div className="absolute top-1/2 right-0 -translate-y-1/2 w-3 h-3 rounded-full bg-primary/60" />
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Mouse interaction hint */}
-      <div
-        className={`absolute bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-2 transition-all duration-1000 ${
-          isVisible ? "opacity-60" : "opacity-0"
-        }`}
-        style={{
-          opacity: isVisible ? 0.6 - scrollProgress * 2 : 0,
-        }}
-      >
-        <MousePointer2 className="w-4 h-4 text-muted-foreground animate-pulse" />
-        <span className="text-xs text-muted-foreground uppercase tracking-wider font-mono">
-          Interactua con el cerebro
-        </span>
       </div>
 
       {/* Scroll indicator */}
@@ -236,9 +222,6 @@ export function Hero() {
         className={`absolute bottom-10 left-1/2 -translate-x-1/2 transition-all duration-1000 delay-1000 ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
-        style={{
-          opacity: isVisible ? 1 - scrollProgress * 3 : 0,
-        }}
       >
         <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex justify-center">
           <div className="w-1.5 h-3 bg-primary rounded-full mt-2 animate-bounce" />
