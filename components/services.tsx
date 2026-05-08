@@ -9,29 +9,27 @@ import {
   TrendingUp,
   Smartphone,
   Monitor,
-  Users,
-  Calculator,
-  Scale,
   ArrowRight,
   Sparkles,
 } from "lucide-react"
+import { ReclutalIcon, ContabilidadIcon, LegalIcon } from "@/components/service-icons"
 
 const services = [
   {
     id: 1,
     icon: Globe,
-    title: "Paginas Web",
+    title: "Páginas Web",
     description:
-      "Tu web ademas de bonita; debe generar resultados. Disenos claros, faciles de usar y hechos para que tus clientes te encuentren, te entiendan y te elijan.",
+      "Tu web además de bonita; debe generar resultados. Diseños claros, fáciles de usar y hechos para que tus clientes te encuentren, te entiendan y te elijan.",
     color: "#3B82F6",
     href: "/#servicios",
   },
   {
     id: 2,
     icon: Palette,
-    title: "Diseno Grafico",
+    title: "Diseño Gráfico",
     description:
-      "Disenamos la imagen de tu marca para que comunique, conecte y que tus clientes la recuerden. Branding, logotipos, anuncios, lonas, volantes, tarjetas de presentacion...",
+      "Diseñamos la imagen de tu marca para que comunique, conecte y que tus clientes la recuerden. Branding, logotipos, anuncios, lonas, volantes, tarjetas de presentación...",
     color: "#EC4899",
     href: "/#servicios",
   },
@@ -40,7 +38,7 @@ const services = [
     icon: TrendingUp,
     title: "Marketing Digital",
     description:
-      "Creamos estrategias digitales que te ayudan a conseguir mas clientes y vender mas. Usamos redes sociales, publicidad y analisis de datos para que tomes decisiones con seguridad.",
+      "Creamos estrategias digitales que te ayudan a conseguir más clientes y vender más. Usamos redes sociales, publicidad y análisis de datos para que tomes decisiones con seguridad.",
     color: "#22C55E",
     href: "/#servicios",
   },
@@ -49,45 +47,48 @@ const services = [
     icon: Smartphone,
     title: "Desarrollo de Apps",
     description:
-      "Creamos aplicaciones y sistemas que facilitan tu negocio, automatizan tareas y resuelven lo que necesitas. Tecnologia hecha a tu medida para que todo funcione mejor.",
+      "Creamos aplicaciones y sistemas que facilitan tu negocio, automatizan tareas y resuelven lo que necesitas. Tecnología hecha a tu medida para que todo funcione mejor.",
     color: "#F59E0B",
     href: "/#servicios",
   },
   {
     id: 5,
     icon: Monitor,
-    title: "Tecnologia y Equipos",
+    title: "Tecnología y Equipos",
     description:
-      "Proveemos equipos de computo de alto rendimiento y ofrecemos servicios de mantenimiento preventivo. Tu infraestructura tecnologica en las mejores manos.",
+      "Proveemos equipos de cómputo de alto rendimiento y ofrecemos servicios de mantenimiento preventivo. Tu infraestructura tecnológica en las mejores manos.",
     color: "#EF4444",
     href: "/#servicios",
   },
   {
     id: 6,
-    icon: Users,
+    icon: ReclutalIcon,
     title: "Reclutamiento",
     description:
       "Encontramos al talento que tu empresa necesita. Conectamos habilidades con oportunidades para fortalecer tu equipo humano.",
-    color: "#8B5CF6",
+    color: "#FACC15",
     href: "/reclutal",
+    isCustomIcon: true,
   },
   {
     id: 7,
-    icon: Calculator,
+    icon: ContabilidadIcon,
     title: "Contabilidad",
     description:
-      "Combinamos experiencia tecnica con vision estrategica. Atendemos tanto tus desafios empresariales como tus asuntos personales, con el mismo compromiso y profesionalismo.",
-    color: "#06B6D4",
+      "Combinamos experiencia técnica con visión estratégica. Atendemos tanto tus desafíos empresariales como tus asuntos personales, con el mismo compromiso y profesionalismo.",
+    color: "#0891B2",
     href: "/contabilidad",
+    isCustomIcon: true,
   },
   {
     id: 8,
-    icon: Scale,
+    icon: LegalIcon,
     title: "Servicios Legales",
     description:
-      "Combinamos experiencia tecnica con vision estrategica. Atendemos tanto tus desafios empresariales como tus asuntos personales. Entendemos que los retos legales no se limitan a la oficina.",
-    color: "#14B8A6",
+      "Combinamos experiencia técnica con visión estratégica. Atendemos tanto tus desafíos empresariales como tus asuntos personales. Entendemos que los retos legales no se limitan a la oficina.",
+    color: "#22C55E",
     href: "/legal",
+    isCustomIcon: true,
   },
 ]
 

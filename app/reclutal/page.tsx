@@ -1,19 +1,20 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, Users, Search, UserCheck, ClipboardList, FileText, Upload, CheckCircle } from "lucide-react"
+import { ArrowRight, Users, Search, UserCheck, ClipboardList, FileText, Upload, MessageCircle } from "lucide-react"
+import { ReclutalIcon } from "@/components/service-icons"
 
 const servicios = [
-  { icon: Search, title: "Reclutamiento y Seleccion de Personal", color: "#3B82F6" },
-  { icon: UserCheck, title: "Headhunting (Busqueda de Alto Nivel)", color: "#22C55E" },
-  { icon: ClipboardList, title: "Evaluacion por Competencias", color: "#EC4899" },
+  { icon: Search, title: "Reclutamiento y Selección de Personal", color: "#3B82F6" },
+  { icon: UserCheck, title: "Headhunting (Búsqueda de Alto Nivel)", color: "#22C55E" },
+  { icon: ClipboardList, title: "Evaluación por Competencias", color: "#EC4899" },
   { icon: Users, title: "Entrevistas y Filtro de Candidatos", color: "#F59E0B" },
-  { icon: FileText, title: "Asesoria en Descripciones de Puesto", color: "#8B5CF6" },
+  { icon: FileText, title: "Asesoría en Descripciones de Puesto", color: "#8B5CF6" },
 ]
 
 export default function ReclutalPage() {
@@ -25,6 +26,8 @@ export default function ReclutalPage() {
     puesto: "",
     experiencia: "",
   })
+  const [fileName, setFileName] = useState("")
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,10 +38,31 @@ export default function ReclutalPage() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setFileName(file.name)
+    }
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log(formData)
+    
+    // Build WhatsApp message
+    const message = `*Nueva Solicitud de Empleo - Reclutal*
+
+*Nombre:* ${formData.nombre}
+*Email:* ${formData.email || "No proporcionado"}
+*Teléfono:* ${formData.telefono}
+*Puesto Solicitado:* ${formData.puesto}
+*Años de experiencia:* ${formData.experiencia || "No especificado"}
+*CV:* ${fileName || "No adjuntado"}
+
+_Por favor, solicitar el CV por este medio si no fue adjuntado._`
+
+    const encodedMessage = encodeURIComponent(message)
+    // WhatsApp number for Reclutal: +52 1 443 611 8169
+    window.open(`https://wa.me/5214436118169?text=${encodedMessage}`, '_blank')
   }
 
   return (
@@ -48,8 +72,8 @@ export default function ReclutalPage() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <Users className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 bg-yellow-400/10 text-yellow-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <ReclutalIcon className="w-5 h-5" color="#ca8a04" />
             Reclutal
           </div>
           <h1
@@ -60,7 +84,7 @@ export default function ReclutalPage() {
             }}
           >
             Conectamos talento con{" "}
-            <span className="text-primary">oportunidades</span>
+            <span className="text-yellow-500">oportunidades</span>
           </h1>
           <p
             className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8"
@@ -69,12 +93,12 @@ export default function ReclutalPage() {
               opacity: 1 - scrollProgress * 0.3,
             }}
           >
-            En Reclutal sabemos que el activo mas importante de una empresa es su gente. Nos 
+            En Reclutal sabemos que el activo más importante de una empresa es su gente. Nos 
             especializamos en encontrar y evaluar al profesional que no solo tiene las habilidades, 
-            sino tambien la actitud para encajar en la cultura de tu organizacion.
+            sino también la actitud para encajar en la cultura de tu organización.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-primary text-primary-foreground">
+            <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black">
               <Link href="#servicios">
                 Descubre Nuestras Soluciones
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -126,7 +150,7 @@ export default function ReclutalPage() {
       <section id="cv" className="py-20">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-center font-[family-name:var(--font-display)]">
-            Tu proximo empleo espera
+            Tu próximo empleo espera
           </h2>
           <p className="text-muted-foreground text-center mb-12">
             Completa el formulario y sube tu CV para conectar con las mejores oportunidades.
@@ -149,7 +173,7 @@ export default function ReclutalPage() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                Correo electronico
+                Correo electrónico
               </label>
               <Input
                 id="email"
@@ -162,7 +186,7 @@ export default function ReclutalPage() {
 
             <div>
               <label htmlFor="telefono" className="block text-sm font-medium text-foreground mb-2">
-                Numero telefonico *
+                Número telefónico *
               </label>
               <Input
                 id="telefono"
@@ -190,14 +214,14 @@ export default function ReclutalPage() {
 
             <div>
               <label htmlFor="experiencia" className="block text-sm font-medium text-foreground mb-2">
-                Anos de experiencia
+                Años de experiencia
               </label>
               <Input
                 id="experiencia"
                 type="text"
                 value={formData.experiencia}
                 onChange={(e) => setFormData({ ...formData, experiencia: e.target.value })}
-                placeholder="Ej: 3 anos"
+                placeholder="Ej: 3 años"
               />
             </div>
 
@@ -205,51 +229,65 @@ export default function ReclutalPage() {
               <label htmlFor="cv" className="block text-sm font-medium text-foreground mb-2">
                 Sube tu CV *
               </label>
-              <div className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
+              <div 
+                className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-yellow-500/50 transition-colors cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+              >
                 <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground mb-1">
-                  Arrastra tu archivo aqui o haz clic para seleccionar
-                </p>
+                {fileName ? (
+                  <p className="text-sm text-foreground font-medium mb-1">
+                    {fileName}
+                  </p>
+                ) : (
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Arrastra tu archivo aquí o haz clic para seleccionar
+                  </p>
+                )}
                 <p className="text-xs text-muted-foreground">PDF, DOC, DOCX (Max. 5MB)</p>
                 <input
+                  ref={fileInputRef}
                   id="cv"
                   type="file"
                   accept=".pdf,.doc,.docx"
                   className="hidden"
+                  onChange={handleFileChange}
                 />
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                * El archivo se enviará por separado vía WhatsApp
+              </p>
             </div>
 
-            <Button type="submit" size="lg" className="w-full bg-primary text-primary-foreground">
-              Enviar
-              <ArrowRight className="ml-2 h-5 w-5" />
+            <Button type="submit" size="lg" className="w-full bg-yellow-500 hover:bg-yellow-600 text-black">
+              <MessageCircle className="mr-2 h-5 w-5" />
+              Enviar por WhatsApp
             </Button>
           </form>
         </div>
       </section>
 
       {/* CTA for Companies */}
-      <section className="py-20 bg-primary/5">
+      <section className="py-20 bg-yellow-500/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <UserCheck className="w-12 h-12 text-primary mx-auto mb-6" />
+          <UserCheck className="w-12 h-12 text-yellow-500 mx-auto mb-6" />
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-[family-name:var(--font-display)]">
-            Encuentra a tu Proximo Talento
+            Encuentra a tu Próximo Talento
           </h2>
           <p className="text-muted-foreground text-lg mb-8">
-            Cuentanos sobre tu proyecto y te propondremos la solucion perfecta.
+            Cuéntanos sobre tu proyecto y te propondremos la solución perfecta.
           </p>
-          <Button asChild size="lg" className="bg-primary text-primary-foreground">
-            <Link href="/#contacto">
-              Cotiza ya!
+          <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black">
+            <a href="https://wa.me/5513789939?text=Hola, necesito servicios de reclutamiento para mi empresa." target="_blank" rel="noopener noreferrer">
+              ¡Cotiza ya!
               <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            </a>
           </Button>
           <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center text-muted-foreground">
-            <a href="tel:+525575086614" className="hover:text-primary transition-colors">
-              55-7508-6614
+            <a href="tel:+525513789939" className="hover:text-yellow-500 transition-colors">
+              55-1378-9939
             </a>
             <span className="hidden sm:inline">|</span>
-            <a href="mailto:contacto@grupoideasmx.com" className="hover:text-primary transition-colors">
+            <a href="mailto:contacto@grupoideasmx.com" className="hover:text-yellow-500 transition-colors">
               contacto@grupoideasmx.com
             </a>
           </div>
