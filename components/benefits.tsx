@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { CheckCircle2, Sparkles, Users, Target, Heart } from "lucide-react"
+import { Sparkles, Users, Target, Heart } from "lucide-react"
 
 const benefits = [
   {
@@ -37,7 +37,6 @@ const benefits = [
 export function Benefits() {
   const sectionRef = useRef<HTMLElement>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -56,25 +55,13 @@ export function Benefits() {
     return () => observer.disconnect()
   }, [])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return
-      const rect = sectionRef.current.getBoundingClientRect()
-      const progress = Math.max(0, Math.min(1, 1 - rect.top / window.innerHeight))
-      setScrollProgress(progress)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
   return (
     <section ref={sectionRef} className="py-24 md:py-32 bg-[#fafafa] relative overflow-hidden">
-      {/* Brutalist decorative elements */}
+      {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       
-      {/* Decorative dots pattern */}
+      {/* Decorative dots pattern - CSS only */}
       <div className="absolute inset-0 pointer-events-none opacity-30">
         <div
           className="absolute inset-0"
@@ -96,11 +83,8 @@ export function Benefits() {
           className={`text-center mb-16 md:mb-20 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
-          style={{
-            transform: `translateY(${(1 - scrollProgress) * 30}px)`,
-          }}
         >
-          {/* Brutalist badge */}
+          {/* Badge */}
           <div className="inline-flex items-center gap-2 mb-6 border border-primary/40 px-3 py-1.5 bg-primary/5">
             <div className="w-1.5 h-1.5 bg-primary animate-pulse" />
             <span className="text-xs uppercase tracking-[0.15em] text-primary font-mono">
@@ -122,13 +106,10 @@ export function Benefits() {
             return (
               <div
                 key={index}
-                className={`group bg-card border border-border rounded-xl p-6 lg:p-8 transition-all duration-500 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 ${
+                className={`group relative bg-card border border-border rounded-xl p-6 lg:p-8 transition-all duration-500 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                 }`}
-                style={{
-                  transitionDelay: `${index * 100}ms`,
-                  transform: isVisible ? `translateY(${(1 - scrollProgress) * (10 + index * 5)}px)` : "translateY(40px)",
-                }}
+                style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="flex gap-5">
                   <div className="flex-shrink-0">
@@ -149,11 +130,15 @@ export function Benefits() {
                 
                 {/* Decorative corner */}
                 <div 
-                  className="absolute bottom-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                  style={{
-                    background: `linear-gradient(135deg, transparent 50%, ${benefit.color}10 50%)`,
-                  }}
-                />
+                  className="absolute bottom-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-br-xl overflow-hidden"
+                >
+                  <div 
+                    className="absolute inset-0"
+                    style={{
+                      background: `linear-gradient(135deg, transparent 50%, ${benefit.color}10 50%)`,
+                    }}
+                  />
+                </div>
               </div>
             )
           })}
