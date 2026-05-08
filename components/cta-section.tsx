@@ -42,6 +42,11 @@ export function CTASection() {
     return () => timers.forEach(clearTimeout)
   }, [isVisible])
 
+  const handleWhatsAppClick = () => {
+    const message = encodeURIComponent("Hola, me gustaría solicitar una cotización para mi proyecto.")
+    window.open(`https://wa.me/5215575086614?text=${message}`, "_blank")
+  }
+
   return (
     <section ref={sectionRef} id="contacto" className="py-28 md:py-36 relative overflow-hidden bg-white">
       {/* Subtle grid pattern */}
@@ -75,7 +80,7 @@ export function CTASection() {
           }`}
         >
           <Image
-            src="/logo.jpg"
+            src="/logo-grupoideas.png"
             alt="Grupo Ideas MX"
             width={240}
             height={96}
@@ -99,7 +104,7 @@ export function CTASection() {
               animationPhase >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            Listo para llevar tu empresa al mundo digital?
+            ¿Listo para llevar tu empresa al mundo digital?
           </p>
 
           <p
@@ -107,7 +112,7 @@ export function CTASection() {
               animationPhase >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Platicanos tu proyecto y te diremos como hacerlo realidad.
+            Platícanos tu proyecto y te diremos cómo hacerlo realidad.
           </p>
         </div>
 
@@ -118,16 +123,14 @@ export function CTASection() {
           }`}
         >
           <Button
-            asChild
+            onClick={handleWhatsAppClick}
             size="lg"
             className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-8 text-xl font-semibold group"
           >
-            <Link href="mailto:contacto@grupoideasmx.com">
-              <span className="flex items-center">
-                Cotiza ya!
-                <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-2" />
-              </span>
-            </Link>
+            <span className="flex items-center">
+              ¡Cotiza ya!
+              <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-2" />
+            </span>
           </Button>
         </div>
 
@@ -145,7 +148,7 @@ export function CTASection() {
               <Phone className="w-5 h-5 text-primary" />
             </div>
             <div className="text-left min-w-0">
-              <div className="text-xs text-muted-foreground uppercase tracking-wider">Telefono</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wider">Teléfono</div>
               <div className="text-foreground font-medium">55-7508-6614</div>
             </div>
           </a>
@@ -168,8 +171,8 @@ export function CTASection() {
               <MapPin className="w-5 h-5 text-primary" />
             </div>
             <div className="text-left min-w-0">
-              <div className="text-xs text-muted-foreground uppercase tracking-wider">Ubicacion</div>
-              <div className="text-foreground font-medium">Mexico</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wider">Ubicación</div>
+              <div className="text-foreground font-medium">México</div>
             </div>
           </div>
         </div>

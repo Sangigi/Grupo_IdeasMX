@@ -13,10 +13,11 @@ const navItems = [
     label: "Servicios", 
     href: "#servicios",
     children: [
-      { label: "Paginas Web", href: "/#servicios" },
-      { label: "Diseno Grafico", href: "/#servicios" },
-      { label: "Marketing Digital", href: "/#servicios" },
-      { label: "Desarrollo de Apps", href: "/#servicios" },
+      { label: "Páginas Web", href: "/paginas-web" },
+      { label: "Diseño Gráfico", href: "/diseno-grafico" },
+      { label: "Marketing Digital", href: "/marketing-digital" },
+      { label: "Desarrollo de Apps", href: "/desarrollo-apps" },
+      { label: "Tecnología", href: "/tecnologia" },
       { label: "Contabilidad", href: "/contabilidad" },
       { label: "Legal", href: "/legal" },
       { label: "Reclutamiento", href: "/reclutal" },
@@ -39,10 +40,14 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const handleWhatsAppClick = () => {
+    const message = encodeURIComponent("Hola, me gustaría solicitar una cotización para mi proyecto.")
+    window.open(`https://wa.me/5215575086614?text=${message}`, "_blank")
+  }
+
   // Always use dark text since background is white
   const textColor = "text-foreground/70"
   const textHoverColor = "hover:text-primary"
-  const logoFilter = ""
 
   return (
     <header
@@ -57,17 +62,17 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/logo.jpg"
+              src="/logo-grupoideas.png"
               alt="Grupo Ideas MX"
               width={140}
               height={50}
-              className={`h-10 md:h-12 w-auto transition-all duration-300 ${logoFilter}`}
+              className="h-10 md:h-12 w-auto transition-all duration-300"
               priority
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6" aria-label="Navegacion principal">
+          <nav className="hidden md:flex items-center gap-6" aria-label="Navegación principal">
             {navItems.map((item) => (
               <div
                 key={item.label}
@@ -107,8 +112,8 @@ export function Header() {
                 )}
               </div>
             ))}
-            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Link href="#contacto">Cotiza ya!</Link>
+            <Button onClick={handleWhatsAppClick} className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              ¡Cotiza ya!
             </Button>
           </nav>
 
@@ -116,7 +121,7 @@ export function Header() {
           <button
             className="md:hidden p-2 transition-colors text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Cerrar menu" : "Abrir menu"}
+            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -128,7 +133,7 @@ export function Header() {
           className={`md:hidden overflow-hidden transition-all duration-300 ${
             isMobileMenuOpen ? "max-h-[500px] pb-4" : "max-h-0"
           }`}
-          aria-label="Navegacion movil"
+          aria-label="Navegación móvil"
         >
           <div className="flex flex-col gap-2 bg-card rounded-lg p-4 border border-border">
             {navItems.map((item) => (
@@ -168,8 +173,8 @@ export function Header() {
                 )}
               </div>
             ))}
-            <Button asChild className="w-full mt-2 bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Link href="#contacto">Cotiza ya!</Link>
+            <Button onClick={handleWhatsAppClick} className="w-full mt-2 bg-primary hover:bg-primary/90 text-primary-foreground">
+              ¡Cotiza ya!
             </Button>
           </div>
         </nav>

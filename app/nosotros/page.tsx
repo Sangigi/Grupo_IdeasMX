@@ -9,7 +9,7 @@ import { ArrowRight, Target, Eye, Lightbulb, Users, Zap, Shield, Heart, Layers }
 
 const valores = [
   { icon: Layers, title: "Sinergia", color: "#3B82F6" },
-  { icon: Lightbulb, title: "Innovacion", color: "#F59E0B" },
+  { icon: Lightbulb, title: "Innovación", color: "#F59E0B" },
   { icon: Heart, title: "Servicio", color: "#EC4899" },
   { icon: Shield, title: "Compromiso", color: "#22C55E" },
   { icon: Zap, title: "Versatilidad", color: "#8B5CF6" },
@@ -29,6 +29,11 @@ export default function NosotrosPage() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const handleWhatsAppClick = () => {
+    const message = encodeURIComponent("Hola, me gustaría saber más sobre Grupo Ideas MX.")
+    window.open(`https://wa.me/5215575086614?text=${message}`, "_blank")
+  }
 
   return (
     <main className="min-h-screen bg-background">
@@ -57,8 +62,8 @@ export default function NosotrosPage() {
               opacity: 1 - scrollProgress * 0.3,
             }}
           >
-            En Grupo Ideas, creemos en el poder de las ideas transformadoras. Nacimos con la mision 
-            de ser un partner estrategico para las empresas, uniendo diversas disciplinas bajo un 
+            En Grupo Ideas, creemos en el poder de las ideas transformadoras. Nacimos con la misión 
+            de ser un partner estratégico para las empresas, uniendo diversas disciplinas bajo un 
             mismo techo para ofrecer soluciones coherentes, eficientes y de alto impacto.
           </p>
           <Button asChild size="lg" className="bg-primary text-primary-foreground">
@@ -84,12 +89,12 @@ export default function NosotrosPage() {
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Target className="w-7 h-7 text-primary" />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground">Mision</h3>
+                <h3 className="text-2xl font-bold text-foreground">Misión</h3>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                Brindar soluciones tecnologicas, creativas y estrategicas integrales que impulsen 
-                la transformacion y el crecimiento sostenible de nuestros clientes. Integramos 
-                diseno, tecnologia, marketing y talento humano para construir un ecosistema de 
+                Brindar soluciones tecnológicas, creativas y estratégicas integrales que impulsen 
+                la transformación y el crecimiento sostenible de nuestros clientes. Integramos 
+                diseño, tecnología, marketing y talento humano para construir un ecosistema de 
                 servicios que simplifica, innova y potencia cualquier negocio.
               </p>
             </div>
@@ -100,13 +105,13 @@ export default function NosotrosPage() {
                 <div className="w-14 h-14 rounded-xl bg-amber-500/10 flex items-center justify-center">
                   <Eye className="w-7 h-7 text-amber-500" />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground">Vision</h3>
+                <h3 className="text-2xl font-bold text-foreground">Visión</h3>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                Aspiramos a ser reconocidos como el partner de innovacion mas confiable a nivel 
-                nacional, donde la convergencia de nuestras disciplinas define el nuevo estandar 
+                Aspiramos a ser reconocidos como el partner de innovación más confiable a nivel 
+                nacional, donde la convergencia de nuestras disciplinas define el nuevo estándar 
                 para el desarrollo empresarial. Visualizamos un futuro donde cada empresa que 
-                colabore con nosotros alcance su maximo potencial operativo, digital y humano.
+                colabore con nosotros alcance su máximo potencial operativo, digital y humano.
               </p>
             </div>
           </div>
@@ -120,7 +125,7 @@ export default function NosotrosPage() {
             Valores
           </h2>
           <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-            Los principios que guian cada decision y proyecto que emprendemos.
+            Los principios que guían cada decisión y proyecto que emprendemos.
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
@@ -150,16 +155,14 @@ export default function NosotrosPage() {
       <section className="py-20 bg-primary/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-[family-name:var(--font-display)]">
-            Inicia la transformacion
+            Inicia la transformación
           </h2>
           <p className="text-muted-foreground text-lg mb-8">
-            Cuentanos sobre tu proyecto y te propondremos la solucion perfecta.
+            Cuéntanos sobre tu proyecto y te propondremos la solución perfecta.
           </p>
-          <Button asChild size="lg" className="bg-primary text-primary-foreground">
-            <Link href="/#contacto">
-              Cotiza ya!
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+          <Button onClick={handleWhatsAppClick} size="lg" className="bg-primary text-primary-foreground">
+            ¡Cotiza ya!
+            <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
           <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center text-muted-foreground">
             <a href="tel:+525575086614" className="hover:text-primary transition-colors">

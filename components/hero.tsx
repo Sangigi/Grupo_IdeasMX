@@ -44,6 +44,11 @@ export function Hero() {
     return () => clearInterval(interval)
   }, [isVisible])
 
+  const handleWhatsAppClick = () => {
+    const message = encodeURIComponent("Hola, me gustaría hablar con un asesor sobre mi proyecto.")
+    window.open(`https://wa.me/5215575086614?text=${message}`, "_blank")
+  }
+
   return (
     <section
       ref={sectionRef}
@@ -132,7 +137,7 @@ export function Hero() {
             <div className="inline-flex items-center gap-2 mb-6 border border-primary/40 px-4 py-2 bg-primary/5 rounded-md">
               <div className="w-2 h-2 bg-primary animate-pulse rounded-full" />
               <span className="text-xs uppercase tracking-[0.2em] text-primary font-mono">
-                Creatividad + Tecnologia
+                Creatividad + Tecnología
               </span>
             </div>
 
@@ -155,22 +160,20 @@ export function Hero() {
             </h2>
 
             <p className="text-muted-foreground text-base md:text-lg max-w-lg mb-10 leading-relaxed">
-              En Grupo Ideas hacemos que la creatividad y la tecnologia trabajen para ti en el mundo digital.
+              En Grupo Ideas hacemos que la creatividad y la tecnología trabajen para ti en el mundo digital.
             </p>
 
             {/* CTA buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
-                asChild
+                onClick={handleWhatsAppClick}
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg group relative overflow-hidden"
               >
-                <Link href="#contacto">
-                  <span className="relative z-10 flex items-center">
-                    Habla con un asesor
-                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
+                <span className="relative z-10 flex items-center">
+                  Habla con un asesor
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </span>
               </Button>
               <Button
                 asChild
@@ -194,7 +197,7 @@ export function Hero() {
               </div>
               <div>
                 <div className="text-3xl font-bold text-primary font-mono">5+</div>
-                <div className="text-xs uppercase tracking-wider text-muted-foreground">Anos</div>
+                <div className="text-xs uppercase tracking-wider text-muted-foreground">Años</div>
               </div>
             </div>
           </div>

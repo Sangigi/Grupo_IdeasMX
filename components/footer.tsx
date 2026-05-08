@@ -6,10 +6,10 @@ import { ArrowUpRight } from "lucide-react"
 
 const footerLinks = {
   servicios: [
-    { label: "Paginas Web", href: "/#servicios" },
-    { label: "Diseno Grafico", href: "/#servicios" },
-    { label: "Marketing Digital", href: "/#servicios" },
-    { label: "Desarrollo de Apps", href: "/#servicios" },
+    { label: "Páginas Web", href: "/paginas-web" },
+    { label: "Diseño Gráfico", href: "/diseno-grafico" },
+    { label: "Marketing Digital", href: "/marketing-digital" },
+    { label: "Desarrollo de Apps", href: "/desarrollo-apps" },
   ],
   empresa: [
     { label: "Nosotros", href: "/nosotros" },
@@ -19,7 +19,7 @@ const footerLinks = {
   ],
   legal: [
     { label: "Aviso de Privacidad", href: "/aviso-privacidad" },
-    { label: "Terminos y Condiciones", href: "/terminos" },
+    { label: "Términos y Condiciones", href: "/terminos" },
     { label: "Devoluciones", href: "/devoluciones" },
   ],
 }
@@ -37,7 +37,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
               <Image
-                src="/logo.jpg"
+                src="/logo-grupoideas.png"
                 alt="Grupo Ideas MX"
                 width={160}
                 height={60}
@@ -45,14 +45,14 @@ export function Footer() {
               />
             </Link>
             <p className="text-muted-foreground max-w-sm mb-6 leading-relaxed">
-              Hacemos que la creatividad y la tecnologia trabajen para ti en el mundo digital.
+              Hacemos que la creatividad y la tecnología trabajen para ti en el mundo digital.
             </p>
             
             {/* Badge */}
             <div className="inline-flex items-center gap-2 border border-primary/40 px-3 py-1.5 bg-primary/5 rounded-md">
               <div className="w-1.5 h-1.5 bg-primary animate-pulse rounded-full" />
               <span className="text-xs uppercase tracking-[0.15em] text-primary font-mono">
-                Mexico 2024
+                México 2024
               </span>
             </div>
           </div>
@@ -118,7 +118,7 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              Creado con pasion por Grupo Ideas MX
+              Creado con pasión por Grupo Ideas MX
             </p>
             
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
