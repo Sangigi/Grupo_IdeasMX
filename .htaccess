@@ -1,0 +1,18 @@
+# .htaccess en la raíz
+Options -Indexes
+RewriteEngine On
+
+# Si la ruta exacta existe como archivo, servirla
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Si existe como carpeta con index.html, servirla
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Redirigir /ruta/ → /ruta.html
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.+?)/?$ /$1.html [L]
+
+# Fallback al index para el router de Next.js
+RewriteRule ^ /index.html [L]
